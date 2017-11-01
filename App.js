@@ -1,57 +1,80 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
-  Platform,
-  StyleSheet,
+  View,
   Text,
-  View
+  TouchableHighlight,
+  StyleSheet
 } from 'react-native';
+import { connect } from 'react-redux'
+import fetchPeopleFromAPI from './actions'
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
+let styles
+
+const App = (props) => { 
+  const { 
+    container, 
+    text,
+    button,
+    buttonText
+  } = styles
+
+  const {people , isFetching } = props.people
+
+  return  (
+    <View>
+      <Text style={text}>Redux App</Text>
+      <TouchableHighlight style={button} onPress={props.getPeople}>
+          <Text style={buttonText}>Fetch Data</Text>
+      </TouchableHighlight>
+      {
+        isFetching && <Text>Loading</Text>
+      }
+      {
+        people.length ? (
+          people.map((person, index) => {
+            return (
+              <View>
+                <Test>Name: {person.name}</Test>
+                <Test>BirthYear: {person.birth_year}</Test>
+              </View>
+            )
+          })
+        ) : null
+      }
+    </View>
+  )
+}
+
+styles = StyleSheet.create({
+  container: {
+    marginTop: 100,
+    paddingLeft: 20,
+    paddingTop: 20,
+  },
+  text: {
+    textAlign: 'center'
+  },
+  button: {
+    backgroundColor: '#0b7eff',
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonText: {
+    color: 'white'
+  }
 });
 
-export default class App extends Component<{}> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-      </View>
-    );
+function mapStateToProps(state) {
+  return {
+    people: state.people
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+function mapDispatchToProps(dispatch) {
+  return {
+    getPeople: () => dispatch(fetchPeopleFromAPI())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)
