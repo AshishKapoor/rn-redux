@@ -6,7 +6,7 @@ import {
   StyleSheet
 } from 'react-native';
 import { connect } from 'react-redux'
-import fetchPeopleFromAPI from './actions'
+import {fetchPeopleFromAPI} from './actions'
 
 let styles
 
@@ -19,7 +19,7 @@ const App = (props) => {
   } = styles
 
   const {people , isFetching } = props.people
-
+  console.log(props.people);
   return  (
     <View style={container}>
       <Text style={text}>Redux App</Text>
