@@ -21,7 +21,7 @@ const App = (props) => {
   const {people , isFetching } = props.people
 
   return  (
-    <View>
+    <View style={container}>
       <Text style={text}>Redux App</Text>
       <TouchableHighlight style={button} onPress={props.getPeople}>
           <Text style={buttonText}>Fetch Data</Text>
@@ -48,8 +48,9 @@ const App = (props) => {
 styles = StyleSheet.create({
   container: {
     marginTop: 100,
-    paddingLeft: 20,
     paddingTop: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
   text: {
     textAlign: 'center'
